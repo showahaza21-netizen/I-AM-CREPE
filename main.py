@@ -517,22 +517,20 @@ def main(page: ft.Page):
     )
 
     left_side = ft.Column([
-            ft.Row([
-            ft.Text("🍽️ ร้าน I AM CREPE", size=24, weight=ft.FontWeight.BOLD, color=DARK),
+        ft.Row([
+            ft.Text("🍽️ ร้าน I AM CREPE", size=20, weight=ft.FontWeight.BOLD, color=DARK),
             ft.Container(
-                content=ft.Text(f"📍 โต๊ะที่: {table_number}", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD),
+                content=ft.Text(f"📍 โต๊ะที่: {table_number}", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD, size=11),
                 bgcolor=GREEN,
-                padding=10,  # <--- ใช้แบบกำหนดตัวเลขตรงๆ แทน
+                padding=8,
                 border_radius=20
             )
-            
-            
         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
         search_field,
         category_buttons,
         ft.Divider(),
         food_grid
-    ], expand=True)
+    ], spacing=10)
 
     # --- ฟังก์ชันกดส่งออเดอร์ให้แม่ค้าหน้าร้าน ---
     def handle_submit_order(e):
@@ -543,7 +541,6 @@ def main(page: ft.Page):
             page.update()
             return
 
-        # ตรงนี้สามารถเขียนโค้ดบันทึกลงฐานข้อมูล หรือส่ง API ไปหน้าจอแม่ค้าได้
         cart.clear()
         update_cart_ui()
         
@@ -552,20 +549,19 @@ def main(page: ft.Page):
         page.update()
 
     right_side = ft.Container(
-        width=340,
         padding=15,
         bgcolor=ft.Colors.WHITE,
         border_radius=12,
         content=ft.Column([
             ft.Row([
                 ft.Icon(ft.Icons.SHOPPING_BAG, color=DARK),
-                ft.Text("ตะกร้าสินค้า", size=18, weight=ft.FontWeight.BOLD, color=DARK),
+                ft.Text("ตะกร้าสินค้า", size=16, weight=ft.FontWeight.BOLD, color=DARK),
             ]),
             ft.Divider(),
             cart_items_column,
             ft.Divider(),
             ft.Row([
-                ft.Text("ราคารวมทั้งหมด:", size=14, weight=ft.FontWeight.BOLD, color=DARK),
+                ft.Text("ราคารวมทั้งหมด:", size=13, weight=ft.FontWeight.BOLD, color=DARK),
                 total_price_text,
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             ft.Container(height=10),
@@ -576,19 +572,23 @@ def main(page: ft.Page):
                 width=300,
                 on_click=handle_submit_order
             )
-        ])
+        ], spacing=10)
     )
 
     update_food_list()
     update_cart_ui()
 
+    # ใช้ Column แนวตั้งเดี่ยวแบบเลื่อนได้ทั้งหมด เพื่อให้มือถือแสดงผลเรียงลงมาได้อย่างลื่นไหลไม่ติดขัด
     page.add(
-        ft.Row([left_side, right_side], expand=True, spacing=20)
+        ft.Column([
+            left_side,
+            ft.Divider(height=30, color="transparent"),
+            right_side
+        ], scroll=ft.ScrollMode.AUTO, expand=True)
     )
 
 import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8500))
-    # เรียกใช้ ft.run โดยใส่ชื่อฟังก์ชัน main ลงไปตรงๆ ได้เลยครับ
     ft.run(main, port=port, view=ft.AppView.WEB_BROWSER)
