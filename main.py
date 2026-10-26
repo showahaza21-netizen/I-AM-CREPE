@@ -586,5 +586,8 @@ def main(page: ft.Page):
         ft.Row([left_side, right_side], expand=True, spacing=20)
     )
 
+import os
+
 if __name__ == "__main__":
-    ft.run(main)
+    port = int(os.environ.get("PORT", 8500))
+    ft.app(target=main, view=None, port=port, host="0.0.0.0")
