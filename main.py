@@ -590,4 +590,5 @@ import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8500))
-    ft.app(target=main, view=None, port=port, host="0.0.0.0")
+    # เปลี่ยนจาก ft.app เป็น ft.run โดยรองรับการกำหนด port และ host แบบนี้ครับ
+    ft.run(target=main, port=port, view=ft.AppView.WEB_BROWSER)
